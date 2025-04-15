@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.SocialPlatforms.Impl;
@@ -13,9 +15,70 @@ public class GamePlayer : MonoBehaviour
     public float GameTimer; // 숫자 - float (t소수점 O)
     public bool IsPlaying; //맞냐 틀리냐 true false
 
+    public GameObject txtTimer;
+    public GameObject txtName;
+    public GameObject txtScoreValue;
+    public GameObject txtHpValue;
+
+    public GameObject coinPrefab;
+    public GameObject enemyPrefab;
+
+    public GameObject itemContainer;
+
+    public GameObject enemyContainer;
+
+    public int ItenCount = 30;
+    public float mapSize = 20;
+
     private void Start()
     {
-        
+        txtName.GetComponent<TMP_Text>().text = PlayerName;
+        txtTimer.GetComponent<TMP_Text>().text = Hp.ToString();
+
+        // 생성
+        // 오버로딩
+        // Instantiate(coinPrefab, position, rotation);
+
+        // enemyContainer.transform
+        // enemyContainerGetComponent<Transform>()
+
+        //제어문
+        // if
+        // for
+
+        // 시작 끝 변화
+        int count;
+        for( count = 1; count <=ItenCount; count ++ )
+        {
+            Debug.Log("반복중입니다.");
+            GameObject item = Instantiate(enemyPrefab, enemyContainer.transform);
+            // 변수
+            float halfSize = 20 / 2; // 20 * 0.5f;
+            float randomX = Random.Range(halfSize * -1, halfSize);
+            float randomZ = Random.Range(halfSize * -1, halfSize);
+            item.transform.position = new Vector3(randomX, 1, randomZ);
+        }
+
+        for (count = 1; count <= ItenCount; count ++)
+        {
+            GameObject item = Instantiate(coinPrefab, itemContainer.transform);
+            // 변수
+            float halfSize = 20 / 2; // 20 * 0.5f;
+            float randomX = Random.Range(halfSize * -1, halfSize);
+            float randomZ = Random.Range(halfSize * -1, halfSize);
+            item.transform.position = new Vector3(randomX, 1, randomZ);
+        }
+
+
+        // 파괴
+        //Destroy(txtName);
+
+        //활성화/비활성화
+        //txtName.SetActive(true);
+        //txtName.SetActive(false);
+
+        //컴포넌트 접근
+        //txtName.GetComponent<TMP_Text>();
     }
 
 
@@ -34,6 +97,8 @@ public class GamePlayer : MonoBehaviour
         {
             IsPlaying = false;
         }
+
+        txtTimer.GetComponent<TMP_Text>().text = GameTimer.ToString("F1");
     }
 
 
@@ -64,7 +129,11 @@ public class GamePlayer : MonoBehaviour
         {
             Debug.Log("Item Check");
             Score = Score + 1;
+
         }
+
+        txtScoreValue.GetComponent<TMP_Text>().text = Score.ToString();
+        txtHpValue.GetComponent<TMP_Text>().text = Hp.ToString();
 
         Destroy(other.gameObject);
     }
